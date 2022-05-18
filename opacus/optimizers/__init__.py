@@ -16,6 +16,7 @@ from .ddp_perlayeroptimizer import DistributedPerLayerOptimizer
 from .ddpoptimizer import DistributedDPOptimizer
 from .optimizer import DPOptimizer
 from .perlayeroptimizer import DPPerLayerOptimizer
+from .objpert_optimizer import ObjPertOptimizer
 
 
 __all__ = [
@@ -23,6 +24,7 @@ __all__ = [
     "DistributedDPOptimizer",
     "DPOptimizer",
     "DPPerLayerOptimizer",
+    "ObjPertOptimizer"
 ]
 
 
@@ -35,6 +37,8 @@ def get_optimizer_class(clipping: str, distributed: bool):
         return DPPerLayerOptimizer
     elif clipping == "per_layer" and distributed is True:
         return DistributedPerLayerOptimizer
+    elif clipping == "flat_reg" and distributed is False:
+        return ObjPertOptimizer
 
     raise ValueError(
         f"Unexpected optimizer parameters. Clipping: {clipping}, distributed: {distributed}"
